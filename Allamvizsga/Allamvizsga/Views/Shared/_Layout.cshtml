@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>SERVICE BOOK</title>
+    @Styles.Render("~/Content/css")
+  
+   
+    
+    <script type="text/javascript" src="~/Scripts/knockout-3.4.2.js"></script>
+    <link rel="stylesheet" href="~/css/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/fonts/stylesheet.css" />
+    <link rel="stylesheet" href="~/css/fonts/fonts.css" />
+    <link rel="stylesheet" href="~/css/animat/animate.min.css" />
+    <link rel="stylesheet" href="~/css/fancybox/jquery.fancybox.css" />
+    <link rel="stylesheet" href="~/css/nivo-lightbox/nivo-lightbox.css" />
+    <link rel="stylesheet" href="~/css/themes/default/default.css" />
+    <link rel="stylesheet" href="~/css/owl-carousel/owl.carousel.css" />
+    <link rel="stylesheet" href="~/css/owl-carousel/owl.theme.css" />
+    <link rel="stylesheet" href="~/css/owl-carousel/owl.transitions.css">
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+
+
+
+   
+
+
+
+</head>
+<body>
+
+    <header id="home" class="header">
+        <div class="main_menu_bg navbar-fixed-top">
+            <div class="container">
+                <div class="row">
+                    <div class="nave_menu">
+                        <nav class="navbar navbar-default">
+                            <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header">
+                                  
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                 
+                                </div>
+                              
+                                <a href="#"><img src="~/img/logo.png" alt="" /></a>
+                                    @Html.Partial("_LoginPartial")
+                               
+
+                            </div><!-- /.container-fluid -->
+                        </nav>
+                    </div>
+                </div><!--End of row -->
+
+            </div><!--End of container -->
+
+        </div>
+    </header> <!--End of header -->
+
+   
+   
+        <br><br>
+ 
+        @RenderBody()
+        
+        <hr />
+
+        <footer id="footer" class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="main_footer text-center wow zoomIn" data-wow-duration="1s">
+                        <p>Made by Orban Norbert 2017. All Rights Reserved</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+ 
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <script type="text/javascript" src="~/Scripts/bootstrap/bootstrap.min.js"></script>
+ 
+    <script type="text/javascript" src="~/Scripts/script.js"></script>
+   
+    <script type="text/javascript" src="~/Scripts/fancybox/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="~/Scripts/nivo-lightbox/nivo-lightbox.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/owl-carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-easing/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="~/Scripts/wow/wow.min.js"></script>
+    <!--<script type="text/javascript" src="js/counterup/counterup.min.js"></script>-->
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>-->
+    <!--<script type="text/javascript" src="js/counterup/jquery.counterup.min.js"></script>-->
+    <script type="text/javascript" src="~/Scripts/isotop/isotope.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/isotop/isotop.function.js"></script>
+    <script type="text/javascript" src="~/Scripts/masonry/masonry.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/mixitup/jquery.mixitup.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/masonry/masonry.pkgd.min.js"></script>
+
+
+    
+</body>
+</html>

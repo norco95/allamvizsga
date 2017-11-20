@@ -1,0 +1,121 @@
+﻿
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-6">
+            <div class="form-group row">
+                <div class="col-sm-5">Engine oil and filter</div>
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-bind="checked: cars.engineOilChangeAndFilter">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">Air filter</div>
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-bind="checked: cars.airFilter">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">Pollen filter</div>
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-bind="checked: cars.pollenFilter">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">Fuel filter</div>
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-bind="checked: cars.fuelFilter">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-sm-6">
+            <div class="form-group row">
+                <div class="col-sm-5">Break fluid</div>
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-bind="checked: cars.breakFluid">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">Break Disc and Pads</div>
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-bind="checked: cars.breakDiscAndPads">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">Gear oil or transmission fluid</div>
+                <div class="col-sm-1">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-bind="checked: cars.gearOilOrTransmissionFluid">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+    <div class="form-group row">
+        <div class="col-sm-3">Others:</div>
+        <div class="col-sm-7">
+            
+            <textarea class="form-control" rows="5" data-bind="value: cars.others"></textarea>
+             
+         </div>
+    </div>
+        <div class="form-group row">
+            <div class="col-sm-3">Curent km:</div>
+            <div class="col-sm-7">
+              
+                   
+                        <input type="text" class="form-control" data-bind="value: cars.currentKm">
+                  
+              
+            </div>
+        </div>
+     <div class="form-group row">
+        <div class="col-sm-3">Next visit km:</div>
+        <div class="col-sm-7">
+           
+                    <input type="text" class="form-control" data-bind="value: cars.nextVisitKm">
+              
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3">Next visit Date</div>
+        <div class="col-sm-7">
+           
+                    <input type="date" class="form-control" data-bind="value: cars.nextServiceDate">
+        </div>
+    </div>
+
+   
+</div>
+
