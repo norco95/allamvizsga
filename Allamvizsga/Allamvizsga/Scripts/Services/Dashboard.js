@@ -4,7 +4,6 @@
     this.VIN = ko.observable(null);
     this.Identifier = ko.observable(null);
     this.repaires = ko.observableArray(null);
-    this.seged = ko.observable(null);
     this.services = ko.observableArray(null);
     this.initialize = function (data) {
         var services = _.map(data.Services, function (serv, index) {
@@ -20,28 +19,29 @@
             _self.repaires.push(repaire);
         });
     }
-    this.cars = ko.observable(null);
+    this.repaire = ko.observable(null);
+    
     var carrepairesdata = null;
-
     this.setCarRepairesData = function (data)
     {
-        
+       
+        _self.repaire(null);
         carrepairesdata = data;
         repaires = _self.repaires();
         repaires.forEach(function (element) {
             if (element.VIN == carrepairesdata.vin) {
                
-                this.cars=element;
+              _self.repaire(element);
                
 
             }
 
         });
        
+    
         
-      
         $("#inputRepairesModal").modal("show");
-        
+       
     }
     
     this.addCar = function () {  //addCar
@@ -111,7 +111,7 @@
         repaires.forEach(function (element) {
             if(element.VIN==carrepairesdata.vin)
             {
-                _self.repaires.replace(element,_self.cars);
+                _self.repaires.replace(element,_self.repaire);
             }
         });
         $("#inputRepairesModal").modal("hide");        
