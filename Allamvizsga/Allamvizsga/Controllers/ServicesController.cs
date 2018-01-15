@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Allamvizsga.Models;
@@ -20,18 +19,26 @@ namespace Allamvizsga.Controllers
             var actservice = Servicebook.ServicePlaces.FirstOrDefault(x => x.Email == userID);
             var Services = Servicebook.Services.ToList();
             List<ServicesModels> actualuserrepairs = new List<ServicesModels> { };
-
-            foreach (var serv in Services)
+            if (actservice == null)
             {
-                if (serv.ServiceId == actservice.ServiceId)
+                 
+               Response.Redirect("Account/Login", false);
+            }
+            else
+            {
+                foreach (var serv in Services)
                 {
-                    if (serv.Flag == 0)
+                    if (serv.ServiceId == actservice.ServiceId)
                     {
-                        actualuserrepairs.Add(serv);
+                        if (serv.Flag == 0)
+                        {
+
+                            actualuserrepairs.Add(serv);
+                        }
                     }
+                    if (serv.Owner.Services != null)
+                        serv.Owner.Services = null;
                 }
-                if (serv.Owner.Services != null)
-                    serv.Owner.Services = null;
             }
             return actualuserrepairs;
 
@@ -43,11 +50,13 @@ namespace Allamvizsga.Controllers
 
            var actualuserrepairs = GetCurentServiceCars();
 
+            
             ServicesViewModel servicemodel = new ServicesViewModel()
             {
                 Services = actualuserrepairs
             };
             
+
 
             return View(servicemodel);
 
@@ -106,37 +115,18 @@ namespace Allamvizsga.Controllers
             return Json(new { success = success, messages = message,newCar=actualuserrepairs}, JsonRequestBehavior.DenyGet);
         }
         [HttpPost]
-        public ActionResult EndCar(ServicesModels data)
+        public ActionResult EndCar(CarsModel data)
         {
             bool success = false;
             var message = "";
-
-            
-
             ServiceBooksContext database = new ServiceBooksContext();
-            var curentService = database.Services.FirstOrDefault(i => i.ID == data.ID);
+            var curentService = database.Services.FirstOrDefault(i => i.ID == data.Service.ID);
             curentService.Flag = 1;
             database.SaveChanges();
-           
-             success = true;
-
+            success = true;
             var actualuserrepairs = GetCurentServiceCars();
             return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);
         }
 
-        [HttpPost]
-        public ActionResult CarRepairesAdd(CarsModel data)
-        {
-
-            ServiceBooksContext database = new ServiceBooksContext();
-            data.Flag = 0;
-            data.Servicedate= DateTime.Now;
-            database.Cars.Add(data);
-            database.SaveChanges();
-            bool success = false;
-            var message = "";
-            return Json(new { success = success, messages = message}, JsonRequestBehavior.DenyGet);
-
-        }
     }
 }

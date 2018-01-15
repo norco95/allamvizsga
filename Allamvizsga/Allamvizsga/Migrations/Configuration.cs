@@ -9,7 +9,8 @@ namespace Allamvizsga.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = true; 
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(Allamvizsga.DAL.ServiceBooksContext context)

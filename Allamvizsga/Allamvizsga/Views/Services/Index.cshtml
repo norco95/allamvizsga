@@ -37,13 +37,13 @@
 </div>
 
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-<script type="text/javascript" src="~/Scripts/Services/ServicesModels.js"></script>
 <script type="text/javascript" src="~/Scripts/Services/ServiceModel.js"></script>
+<script type="text/javascript" src="~/Scripts/Services/Dashboard.js"></script>
 <script type="text/javascript" src="~/Scripts/Services/OwnerModel.js"></script>
-<script type="text/javascript" src="~/Scripts/Services/CarsModels.js"></script>
+<script type="text/javascript" src="~/Scripts/Services/RepaireModel.js"></script>
 
 
 <script type="text/javascript">
-    InitializeServiceModel(@Html.Raw(Json.Encode(Model)));
+    InitializeDashboard(@Html.Raw(Json.Encode(Model)));
       
 </script>

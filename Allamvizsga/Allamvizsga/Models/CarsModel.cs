@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -9,7 +10,6 @@ namespace Allamvizsga.Models
     public class CarsModel
     {
         [Key]
-        public int ID{ get; set; }
         public string CarVIN { get; set; }
         public string OwnerPhoneNumber { get; set; }
         public bool EngineOilAndFilter { get; set; }
@@ -25,8 +25,6 @@ namespace Allamvizsga.Models
         public int Flag { get; set; }
         public DateTime Servicedate { get; set; }
         public DateTime NextServiceDate { get; set; }
-
-       
-
+        public virtual ServicesModels Service { get; set; }
     }
 }

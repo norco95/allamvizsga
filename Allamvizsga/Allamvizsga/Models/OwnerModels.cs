@@ -13,10 +13,8 @@ namespace Allamvizsga.Models
         public string Email { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
-
         public virtual ICollection<ServicesModels> Services { get; set; }
 
-
-
+       
     }
 }
