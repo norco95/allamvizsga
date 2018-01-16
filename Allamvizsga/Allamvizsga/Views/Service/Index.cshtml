@@ -1,0 +1,49 @@
+﻿@model Allamvizsga.Models.ServicesViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container">
+
+    <ul class="nav nav-tabs">
+       
+        <li class="active" id="users"><a data-toggle="tab" href="#menu">Curent Cars</a></li>
+        <li><a data-toggle="tab" href="#menu1">Menu1</a></li>
+        <li><a data-toggle="tab" href="#menu2">Menu2</a></li>
+        <li><a data-toggle="tab" href="#menu3">Menu3</a></li>
+    </ul>
+
+   
+
+    <div class="tab-content">
+        <div id="menu" class="tab-pane fade in active">
+            <br>
+            <br>
+            @Html.Partial("_CurentCars")
+        </div>
+        <div id="menu1" class="tab-pane fade">
+           
+
+
+        </div>
+        <div id="menu2" class="tab-pane fade">
+          al
+        </div>
+        <div id="menu3" class="tab-pane fade">
+           fa
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script type="text/javascript" src="~/Scripts/Services/ServiceModel.js"></script>
+<script type="text/javascript" src="~/Scripts/Services/Dashboard.js"></script>
+<script type="text/javascript" src="~/Scripts/Services/OwnerModel.js"></script>
+<script type="text/javascript" src="~/Scripts/Services/RepaireModel.js"></script>
+
+
+<script type="text/javascript">
+    InitializeDashboard(@Html.Raw(Json.Encode(Model)));
+      
+</script>

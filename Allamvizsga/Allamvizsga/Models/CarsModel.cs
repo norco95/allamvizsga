@@ -10,6 +10,10 @@ namespace Allamvizsga.Models
     public class CarsModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Cid { get; set; }
+       
+
         public string CarVIN { get; set; }
         public string OwnerPhoneNumber { get; set; }
         public bool EngineOilAndFilter { get; set; }
@@ -25,6 +29,8 @@ namespace Allamvizsga.Models
         public int Flag { get; set; }
         public DateTime Servicedate { get; set; }
         public DateTime NextServiceDate { get; set; }
+        public int ServiceId { get; set; }
+        [ForeignKey("ServiceId")]
         public virtual ServicesModels Service { get; set; }
     }
 }

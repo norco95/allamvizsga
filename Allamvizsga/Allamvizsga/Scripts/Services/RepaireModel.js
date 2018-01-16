@@ -17,7 +17,7 @@
         this.engineOilChangeAndFilter(data.EngineOilChangeAndFilter);
         this.airFilter(data.AirFilter);
         this.pollenFilter(data.PollenFilter);
-        this.fuelFilter(data.FiuelFilter);
+        this.fuelFilter(data.FuelFilter);
         this.breakFluid(data.BreakFluid);
         this.breakDiscAndPads(data.BreakDiscAndPads);
         this.gearOilOrTransmissionFluid(data.GearOilOrTransmissionFluid);

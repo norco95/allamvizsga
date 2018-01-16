@@ -81,7 +81,7 @@ namespace Allamvizsga.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index","Services");
+                    return RedirectToAction("Index","Service");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

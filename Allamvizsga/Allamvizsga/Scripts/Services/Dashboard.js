@@ -20,10 +20,7 @@
         });
     }
     this.repaire = new RepaireModel();
- 
     var carrepairedata = null;
-    this.s = new RepaireModel();
-    
     this.changevalues=function(data)
     {
         _self.repaire.VIN=data.VIN;
@@ -40,7 +37,6 @@
         _self.repaire.currentKm = data.curentKm;
         _self.repaire.nextServiceDate=data.nextServiceDate;
     }
-
     this.setCarRepairesData = function (data)
     {
        
@@ -59,12 +55,11 @@
         $("#inputRepairesModal").modal("show");
        
     }
-    
     this.addCar = function () {  //addCar
         
         $.ajax({
             type: "POST",
-            url: "/Services/AddCar/",
+            url: "/Service/AddCar/",
             data: {
                 VIN: _self.VIN,
                 Identifier: _self.Identifier,            
@@ -93,10 +88,22 @@
     this.endedCar = function (data) {
         $.ajax({
             type: "POST",
-            url: "/Services/EndCar/",
+            url: "/Service/EndCar/",
             data: {
                 
-                BreakFluid: _self.cars.breakFluid,
+                BreakFluid: _self.repaire.breakFluid,
+                EngineOilChangeAndFilter: _self.repaire.engineOilChangeAndFilter,
+                AirFilter: _self.repaire.airFilter,
+                PollenFilter: _self.repaire.pollenFilter,
+                FuelFilter: _self.repaire.fuelFilter,
+                BreakDiscAndPads: _self.repaire.breakDiscAndPads,
+                GearOilOrTransmissionFluid: _self.repaire.gearOilOrTransmissionFluid,
+                Others: _self.repaire.others,
+                NextVisitKm: _self.repaire.nextVisitKm,
+                CurentKm: _self.repairecurrentKm,
+                NextServiceDate: _self.repaire.nextServiceDate,
+                CarVIN: "almafa",
+               
                 Service:
                     {
                         ID: data.id
@@ -147,8 +154,6 @@
     }  
 
 }
-
-  
 function InitializeDashboard(data) {
     Dashboard.instance = new Dashboard();
 

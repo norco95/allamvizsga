@@ -199,7 +199,7 @@
     <Compile Include="Controllers\CarDatasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="DAL\ServiceBooksContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201712171127454_Initial.cs" />
     <Compile Include="Migrations\201712171127454_Initial.Designer.cs">
       <DependentUpon>201712171127454_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801161614409_migrationname.cs" />
+    <Compile Include="Migrations\201801161614409_migrationname.Designer.cs">
+      <DependentUpon>201801161614409_migrationname.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -377,10 +381,10 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\CarDatas\Index.cshtml" />
-    <Content Include="Views\Services\Index.cshtml" />
-    <Content Include="Views\Services\_CurentCars.cshtml" />
-    <Content Include="Views\Services\_InputCar.cshtml" />
-    <Content Include="Views\Services\_Repaires.cshtml" />
+    <Content Include="Views\Service\Index.cshtml" />
+    <Content Include="Views\Service\_CurentCars.cshtml" />
+    <Content Include="Views\Service\_InputCar.cshtml" />
+    <Content Include="Views\Service\_Repaires.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\fonts\glyphicons-halflings-regular.woff" />
@@ -394,6 +398,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712171127454_Initial.resx">
       <DependentUpon>201712171127454_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801161614409_migrationname.resx">
+      <DependentUpon>201801161614409_migrationname.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
