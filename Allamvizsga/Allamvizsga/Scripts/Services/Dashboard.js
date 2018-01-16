@@ -19,27 +19,43 @@
             _self.repaires.push(repaire);
         });
     }
-    this.repaire = ko.observable(null);
+    this.repaire = new RepaireModel();
+ 
+    var carrepairedata = null;
+    this.s = new RepaireModel();
     
-    var carrepairesdata = null;
+    this.changevalues=function(data)
+    {
+        _self.repaire.VIN=data.VIN;
+        _self.repaire.ownerPhoneNumber = data.ownerPhoneNumber;       
+        _self.repaire.engineOilChangeAndFilter(data.engineOilChangeAndFilter());
+        _self.repaire.airFilter(data.airFilter());
+        _self.repaire.pollenFilter(data.pollenFilter());
+        _self.repaire.fuelFilter(data.fuelFilter());
+        _self.repaire.breakFluid(data.breakFluid());
+        _self.repaire.breakDiscAndPads(data.breakDiscAndPads());
+        _self.repaire.gearOilOrTransmissionFluid(data.gearOilOrTransmissionFluid());
+        _self.repaire.others=data.others;
+        _self.repaire.nextVisitKm=data.nextVisitKm;
+        _self.repaire.currentKm = data.curentKm;
+        _self.repaire.nextServiceDate=data.nextServiceDate;
+    }
+
     this.setCarRepairesData = function (data)
     {
        
-        _self.repaire(null);
-        carrepairesdata = data;
+        
+        carrepairedata = data;
         repaires = _self.repaires();
         repaires.forEach(function (element) {
-            if (element.VIN == carrepairesdata.vin) {
+            if (element.VIN == carrepairedata.vin) {
+                _self.changevalues(element)
                
-              _self.repaire(element);
-               
-
             }
-
         });
        
-    
-        
+       
+        var s = _self.repaire;
         $("#inputRepairesModal").modal("show");
        
     }
@@ -107,13 +123,26 @@
     }
     this.saveRepair = function ()
     {
+        var i = 0;
         repaires = _self.repaires();
         repaires.forEach(function (element) {
-            if(element.VIN==carrepairesdata.vin)
+            if(element.VIN==carrepairedata.vin)
             {
-                _self.repaires.replace(element,_self.repaire);
+                    repaires[i].engineOilChangeAndFilter(_self.repaire.engineOilChangeAndFilter());
+                    repaires[i].airFilter(_self.repaire.airFilter());
+                    repaires[i].pollenFilter(_self.repaire.pollenFilter());
+                    repaires[i].fuelFilter(_self.repaire.fuelFilter());
+                    repaires[i].breakFluid(_self.repaire.breakFluid());
+                    repaires[i].breakDiscAndPads(_self.repaire.breakDiscAndPads());
+                    repaires[i].gearOilOrTransmissionFluid(_self.repaire.gearOilOrTransmissionFluid());
+                    repaires[i].others = _self.repaire.others;
+                    repaires[i].nextVisitKm = _self.repaire.nextVisitKm;
+                    repaires[i].currentKm = _self.repaire.currentKm;
+                    repaires[i].nextServiceDate = _self.repaire.nextServiceDate;     
             }
+            i++;
         });
+        _self.repaires(repaires);
         $("#inputRepairesModal").modal("hide");        
     }  
 
