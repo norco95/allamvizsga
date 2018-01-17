@@ -8,18 +8,21 @@
     this.actualKm = ko.observable(null);
     this.flag = ko.observable(null);
     this.serviceId = ko.observable(null);
-    this.cars=ko.observableArray(null);
+    this.historyes = ko.observableArray(null);
+    
     
    if (data != null) {
 
+       var historyes = _.map(data.Car, function (hisory, index) {
+           return new RepaireModel(history);
+
+       });
+
+
+        this.historyes(historyes);
         this.id(data.ID)
         this.vin(data.VIN);
         this.owner = new OwnerModel(data.Owner);
-        var cars = _.map(data.Car, function (car, index) {
-            return new RepaireModel(car);
-        });
-
-        this.cars(cars);
         this.identifier(data.Identifier);
         this.serviceDate(data.ServiceDate);
         this.price(data.Price);

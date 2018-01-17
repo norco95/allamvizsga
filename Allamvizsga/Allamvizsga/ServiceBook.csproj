@@ -289,8 +289,6 @@
     <Content Include="css\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="css\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="css\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="css\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="css\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="css\fonts\opensans-bold.ttf" />
     <Content Include="css\fonts\opensans-light.ttf" />
     <Content Include="css\fonts\opensans-lightitalic.ttf" />

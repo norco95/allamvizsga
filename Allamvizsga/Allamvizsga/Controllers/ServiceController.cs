@@ -11,7 +11,25 @@ namespace Allamvizsga.Controllers
 {
     public class ServiceController : Controller
     {
+        
+        private List<CarsModel>GetHistoryesByVin(String vin)
+        {
+            ServiceBooksContext Servicebook = new ServiceBooksContext();
+            var historyes = Servicebook.Cars.ToList();
+            List<CarsModel> result = new List<CarsModel> { };
+            foreach (var history in historyes)
+            {
+                if (history.CarVIN == vin)
+                {
 
+                    history.Service = null;
+                    result.Add(history);
+                }
+            }
+                    
+                   
+            return result;
+        }
         private List<ServicesModels> GetCurentServiceCars()
         {
             ServiceBooksContext Servicebook = new ServiceBooksContext();
@@ -38,6 +56,8 @@ namespace Allamvizsga.Controllers
                     }
                     if (serv.Owner.Services != null)
                         serv.Owner.Services = null;
+                    if (serv.Car != null)
+                        serv.Car = null;
                 }
             }
             return actualuserrepairs;
@@ -48,9 +68,9 @@ namespace Allamvizsga.Controllers
         {
 
 
-           var actualuserrepairs = GetCurentServiceCars();
-
+            var actualuserrepairs = GetCurentServiceCars();
             
+             
             ServicesViewModel servicemodel = new ServicesViewModel()
             {
                 Services = actualuserrepairs
@@ -102,11 +122,23 @@ namespace Allamvizsga.Controllers
             newCar.ActualKm = 0;
             newCar.ServiceDate = DateTime.Now;
             newCar.Flag = 0;
-                newCar.ServiceId = curentService.ServiceId;
-
-                database.Services.Add(newCar);
+            newCar.ServiceId = curentService.ServiceId;
             
-           
+
+            var historyes = database.Cars.ToList();
+            List<CarsModel> result = new List<CarsModel> { };
+            foreach (var history in historyes)
+            {
+                if (history.CarVIN == newCar.VIN)
+                {
+
+                    history.Service = null;
+                    result.Add(history);
+                }
+            }
+            newCar.Car = result;
+            database.Services.Add(newCar);
+         
             database.SaveChanges();
             
             success = true;
@@ -122,20 +154,49 @@ namespace Allamvizsga.Controllers
             ServiceBooksContext database = new ServiceBooksContext();
             var curentService = database.Services.FirstOrDefault(i => i.ID == data.Service.ID);
             curentService.Flag = 1;
+            curentService.Car = null;
             data.Service = curentService;
-            data.OwnerPhoneNumber = "0";
-            data.Others = "as";
             data.CarVIN = curentService.VIN;
             DateTime localDate = DateTime.Now;
             data.NextServiceDate = localDate;
             data.Servicedate = localDate;
-            //   data.NextServiceDate= DateTime.ParseExact(YourStr, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             data.ServiceId = curentService.ID;
+            foreach(var s in curentService.Car)
+            {
+                s.Service = null;
+            }
+            data.Service = null;
             database.Cars.Add(data);
             database.SaveChanges();
             success = true;
             var actualuserrepairs = GetCurentServiceCars();
             return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);
+        }
+        [HttpPost]
+        public ActionResult DeletCar(CarsModel data)
+        {
+            bool success = false;
+            var message = "";
+            ServiceBooksContext database = new ServiceBooksContext();
+            var curentService = database.Services.FirstOrDefault(i => i.ID == data.Service.ID);
+            curentService.Flag = 2;
+             
+            database.SaveChanges();
+            success = true;
+            var actualuserrepairs = GetCurentServiceCars();
+            return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);
+        }
+
+        [HttpPost]
+        public ActionResult History(CarsModel data)
+        {
+            ServiceBooksContext database = new ServiceBooksContext();
+            string message = "";
+            bool success = false;
+            var historyes = GetCurentServiceCars();
+            success = true;
+
+            return Json(new { success = success, messages = message, historyes=historyes}, JsonRequestBehavior.DenyGet);
         }
 
     }

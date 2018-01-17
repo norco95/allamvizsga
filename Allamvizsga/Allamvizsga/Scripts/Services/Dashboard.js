@@ -20,6 +20,7 @@
         });
     }
     this.repaire = new RepaireModel();
+    this.historyes = ko.observableArray(null);
     var carrepairedata = null;
     this.changevalues=function(data)
     {
@@ -32,10 +33,10 @@
         _self.repaire.breakFluid(data.breakFluid());
         _self.repaire.breakDiscAndPads(data.breakDiscAndPads());
         _self.repaire.gearOilOrTransmissionFluid(data.gearOilOrTransmissionFluid());
-        _self.repaire.others=data.others;
-        _self.repaire.nextVisitKm=data.nextVisitKm;
-        _self.repaire.currentKm = data.curentKm;
-        _self.repaire.nextServiceDate=data.nextServiceDate;
+        _self.repaire.others(data.others());
+        _self.repaire.nextVisitKm(data.nextVisitKm());
+        _self.repaire.currentKm(data.currentKm());
+        _self.repaire.nextServiceDate(data.nextServiceDate());
     }
     this.setCarRepairesData = function (data)
     {
@@ -102,7 +103,7 @@
                 NextVisitKm: _self.repaire.nextVisitKm,
                 CurentKm: _self.repairecurrentKm,
                 NextServiceDate: _self.repaire.nextServiceDate,
-                CarVIN: "almafa",
+                
                
                 Service:
                     {
@@ -142,16 +143,80 @@
                     repaires[i].breakFluid(_self.repaire.breakFluid());
                     repaires[i].breakDiscAndPads(_self.repaire.breakDiscAndPads());
                     repaires[i].gearOilOrTransmissionFluid(_self.repaire.gearOilOrTransmissionFluid());
-                    repaires[i].others = _self.repaire.others;
-                    repaires[i].nextVisitKm = _self.repaire.nextVisitKm;
-                    repaires[i].currentKm = _self.repaire.currentKm;
-                    repaires[i].nextServiceDate = _self.repaire.nextServiceDate;     
+                    repaires[i].others (_self.repaire.others());
+                    repaires[i].nextVisitKm(_self.repaire.nextVisitKm());
+                    repaires[i].currentKm ( _self.repaire.currentKm());
+                    repaires[i].nextServiceDate (_self.repaire.nextServiceDate());     
             }
             i++;
         });
         _self.repaires(repaires);
         $("#inputRepairesModal").modal("hide");        
-    }  
+    }
+    this.deletCar = function (data)
+    {
+        if (confirm("Are you sure you want to delet?") == true) {
+            
+            $.ajax({
+                type: "POST",
+                url: "/Service/DeletCar/",
+                data: {
+                    Service:
+                        {
+                            ID: data.id
+                        }
+
+                },
+
+                success: function (msg) {
+
+                    if (msg.success == true) {
+                        var services = _.map(msg.newCar, function (serv, index) {
+                            return new ServiceModel(serv);
+                        });
+                        _self.services(services);
+                        services.forEach(function (element) {
+                            var repaire = new RepaireModel();
+                            repaire.VIN = element.vin;
+                            _self.repaires.push(repaire);
+                        });
+                    }
+                },
+                dataType: "json"
+            });
+        } 
+    }
+    this.history=function(data)
+    {
+        var s = _self.services.historyes();
+    }
+   // this.history=function(data)
+    //{
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Service/History/",
+    //        data: {
+                
+    //                    CarVIN: data.vin()
+                    
+                
+    //        },
+
+    //        success: function (msg) {
+
+    //            if (msg.success == true) {
+    //                var historyes = _.map(msg.historyes, function (his, index) {
+    //                    return new RepaireModel(his);
+    //                });
+    //                _self.historyes(historyes);
+                   
+    //               }
+    //        },
+    //        dataType: "json"
+    //    });
+    //}
+
+
 
 }
 function InitializeDashboard(data) {

@@ -12,6 +12,7 @@
                 <th>Owner</th>
                 <th>OwnerPhoneNumber</th>
                 <th>Price</th>
+                <th>History</th>
                 <th>Repaires</th>
                 <th>Status</th>
             </tr>
@@ -22,12 +23,24 @@
                 <td data-bind="text: owner.lastName"></td>
                 <td data-bind="text: owner.phoneNumber"></td>
                 <td>
-                <div class="form-group row col-sm-4">
-                     <input type="text" class="form-control">
-                 </div>
+                    <div class="row">
+                    <div class="col-xs-3">
+                        <input class="form-control input-sm" id="ex1" type="text">
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="glyphicon glyphicon-euro"></span>
+                    </div>
+                    
+                    </div>
                 </td>
+                <td><button type="button" class="btn-primary btn-sm" data-toggle="modal" data-bind="click: $root.history.bind($data)">History</button></td>
                 <td><button type="button" class="btn-primary btn-sm" data-toggle="modal"  data-bind="click: $root.setCarRepairesData.bind($data)">Repaires</button></td>
                 <td><button type="button" class="btn-primary btn-sm" data-bind="click: $root.endedCar.bind($data)">Ended</button></td>
+                <td>
+                    <button type="button" class="close" data-bind="click:$root.deletCar.bind($data)" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
