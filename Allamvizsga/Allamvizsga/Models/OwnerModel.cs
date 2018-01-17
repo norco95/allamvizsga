@@ -6,14 +6,14 @@ using System.Web;
 
 namespace Allamvizsga.Models
 {
-    public class OwnerModels
+    public class OwnerModel
     {
         [Key]
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
-        public virtual ICollection<ServicesModels> Services { get; set; }
+        public virtual ICollection<ServiceModel> Services { get; set; }
 
        
     }

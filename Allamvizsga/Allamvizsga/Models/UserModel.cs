@@ -3,7 +3,7 @@
 
 namespace Allamvizsga.Models
 {
-    public class UserModels
+    public class UserModel
     {
 
        [Key]

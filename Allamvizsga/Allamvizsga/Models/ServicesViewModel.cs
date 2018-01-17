@@ -4,7 +4,7 @@ namespace Allamvizsga.Models
 {
     public class ServicesViewModel
     {
-        public List<ServicesModels> Services { get; set; }
+        public List<ServiceModel> Services { get; set; }
         
     }
 

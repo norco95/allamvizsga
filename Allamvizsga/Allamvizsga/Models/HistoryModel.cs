@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Allamvizsga.Models
 {
-    public class CarsModel
+    public class HistoryModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -31,6 +31,6 @@ namespace Allamvizsga.Models
         public DateTime NextServiceDate { get; set; }
         public int ServiceId { get; set; }
         [ForeignKey("ServiceId")]
-        public virtual ServicesModels Service { get; set; }
+        public virtual ServiceModel Service { get; set; }
     }
 }

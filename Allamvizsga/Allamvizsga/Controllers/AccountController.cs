@@ -165,7 +165,7 @@ namespace Allamvizsga.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    UserModels User = new UserModels();
+                    UserModel User = new UserModel();
 
                     User.PhoneNumber = model.PhoneNumber;
                     User.Email = model.Email;

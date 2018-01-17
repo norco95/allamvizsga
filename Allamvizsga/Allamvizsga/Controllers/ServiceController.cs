@@ -12,11 +12,11 @@ namespace Allamvizsga.Controllers
     public class ServiceController : Controller
     {
         
-        private List<CarsModel>GetHistoryesByVin(String vin)
+        private List<HistoryModel>GetHistoryesByVin(String vin)
         {
             ServiceBooksContext Servicebook = new ServiceBooksContext();
-            var historyes = Servicebook.Cars.ToList();
-            List<CarsModel> result = new List<CarsModel> { };
+            var historyes = Servicebook.History.ToList();
+            List<HistoryModel> result = new List<HistoryModel> { };
             foreach (var history in historyes)
             {
                 if (history.CarVIN == vin)
@@ -30,13 +30,13 @@ namespace Allamvizsga.Controllers
                    
             return result;
         }
-        private List<ServicesModels> GetCurentServiceCars()
+        private List<ServiceModel> GetCurentServiceCars()
         {
             ServiceBooksContext Servicebook = new ServiceBooksContext();
             var userID = User.Identity.GetUserName();
             var actservice = Servicebook.ServicePlaces.FirstOrDefault(x => x.Email == userID);
             var Services = Servicebook.Services.ToList();
-            List<ServicesModels> actualuserrepairs = new List<ServicesModels> { };
+            List<ServiceModel> actualuserrepairs = new List<ServiceModel> { };
             if (actservice == null)
             {
                  
@@ -84,7 +84,7 @@ namespace Allamvizsga.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCar(ServicesModels data)
+        public ActionResult AddCar(ServiceModel data)
         {
             bool success = false;
             var message = "";
@@ -98,7 +98,7 @@ namespace Allamvizsga.Controllers
             
             var owners = database.Owners.FirstOrDefault(i => i.PhoneNumber == data.Owner.PhoneNumber);
        
-                ServicesModels newCar = new ServicesModels();
+                ServiceModel newCar = new ServiceModel();
                 var curentService = database.ServicePlaces.FirstOrDefault(i => i.Email == currentUser);
 
                 
@@ -125,8 +125,8 @@ namespace Allamvizsga.Controllers
             newCar.ServiceId = curentService.ServiceId;
             
 
-            var historyes = database.Cars.ToList();
-            List<CarsModel> result = new List<CarsModel> { };
+            var historyes = database.History.ToList();
+            List<HistoryModel> result = new List<HistoryModel> { };
             foreach (var history in historyes)
             {
                 if (history.CarVIN == newCar.VIN)
@@ -147,7 +147,7 @@ namespace Allamvizsga.Controllers
             return Json(new { success = success, messages = message,newCar=actualuserrepairs}, JsonRequestBehavior.DenyGet);
         }
         [HttpPost]
-        public ActionResult EndCar(CarsModel data)
+        public ActionResult EndCar(HistoryModel data)
         {
             bool success = false;
             var message = "";
@@ -166,14 +166,14 @@ namespace Allamvizsga.Controllers
                 s.Service = null;
             }
             data.Service = null;
-            database.Cars.Add(data);
+            database.History.Add(data);
             database.SaveChanges();
             success = true;
             var actualuserrepairs = GetCurentServiceCars();
             return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);
         }
         [HttpPost]
-        public ActionResult DeletCar(CarsModel data)
+        public ActionResult DeletCar(HistoryModel data)
         {
             bool success = false;
             var message = "";
@@ -188,7 +188,7 @@ namespace Allamvizsga.Controllers
         }
 
         [HttpPost]
-        public ActionResult History(CarsModel data)
+        public ActionResult History(HistoryModel data)
         {
             ServiceBooksContext database = new ServiceBooksContext();
             string message = "";

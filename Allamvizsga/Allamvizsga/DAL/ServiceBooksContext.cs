@@ -10,10 +10,10 @@ namespace Allamvizsga.DAL
 {
     public class ServiceBooksContext : DbContext
     {
-        public DbSet<CarsModel> Cars { get; set; }
-        public DbSet<UserModels> ServicePlaces { get; set; }
-        public DbSet<ServicesModels> Services { get; set; }
-        public DbSet<OwnerModels> Owners { get; set; }
+        public DbSet<HistoryModel> History { get; set; }
+        public DbSet<UserModel> ServicePlaces { get; set; }
+        public DbSet<ServiceModel> Services { get; set; }
+        public DbSet<OwnerModel> Owners { get; set; }
 
 
 

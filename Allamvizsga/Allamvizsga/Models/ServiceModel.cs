@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Allamvizsga.Models
 {
-    public class ServicesModels
+    public class ServiceModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,8 +19,8 @@ namespace Allamvizsga.Models
         public int ServiceId { get; set; }
         public string PhoneNumber { get; set; }
         [ForeignKey("PhoneNumber")]
-        public virtual OwnerModels Owner { get; set; }
-        public virtual ICollection<CarsModel> Car { get; set; }
+        public virtual OwnerModel Owner { get; set; }
+        public virtual ICollection<HistoryModel> Car { get; set; }
 
     }
 }
