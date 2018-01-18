@@ -46,11 +46,22 @@
     }
     this.setCarRepairesData = function (data)
     {
+        
+        var cookierepaires = getCookie("repaires");
+        if (cookierepaires != "") {
+            repaires = cookierepaires;
+        }
+        else {
+            repaires = _self.repaires();
+        }
+
+            
+        
         _self.title("Repaires");
         _self.historyConsol(false);
         _self.visibleRepaireButtons(true);
         carrepairedata = data;
-        repaires = _self.repaires();
+        
         repaires.forEach(function (element) {
             if (element.VIN == carrepairedata.vin) {
                 _self.changevalues(element)
@@ -147,24 +158,32 @@
         var i = 0;
         repaires = _self.repaires();
         repaires.forEach(function (element) {
-            if(element.VIN==carrepairedata.vin)
-            {
-                    repaires[i].engineOilChangeAndFilter(_self.repaire.engineOilChangeAndFilter());
-                    repaires[i].airFilter(_self.repaire.airFilter());
-                    repaires[i].pollenFilter(_self.repaire.pollenFilter());
-                    repaires[i].fuelFilter(_self.repaire.fuelFilter());
-                    repaires[i].breakFluid(_self.repaire.breakFluid());
-                    repaires[i].breakDiscAndPads(_self.repaire.breakDiscAndPads());
-                    repaires[i].gearOilOrTransmissionFluid(_self.repaire.gearOilOrTransmissionFluid());
-                    repaires[i].others (_self.repaire.others());
-                    repaires[i].nextVisitKm(_self.repaire.nextVisitKm());
-                    repaires[i].currentKm ( _self.repaire.currentKm());
-                    repaires[i].nextServiceDate(_self.repaire.nextServiceDate());
-                    repaires[i].serviceDate(_self.repaire.serviceDate());
+            if (element.VIN == carrepairedata.vin) {
+
+                repaires[i].engineOilChangeAndFilter(_self.repaire.engineOilChangeAndFilter());
+                repaires[i].airFilter(_self.repaire.airFilter());
+                repaires[i].pollenFilter(_self.repaire.pollenFilter());
+                repaires[i].fuelFilter(_self.repaire.fuelFilter());
+                repaires[i].breakFluid(_self.repaire.breakFluid());
+                repaires[i].breakDiscAndPads(_self.repaire.breakDiscAndPads());
+                repaires[i].gearOilOrTransmissionFluid(_self.repaire.gearOilOrTransmissionFluid());
+                repaires[i].others(_self.repaire.others());
+                repaires[i].nextVisitKm(_self.repaire.nextVisitKm());
+                repaires[i].currentKm(_self.repaire.currentKm());
+                repaires[i].nextServiceDate(_self.repaire.nextServiceDate());
+                repaires[i].serviceDate(_self.repaire.serviceDate());
+
             }
+            var repaireobject = { airFilter: repaires[i].airFilter(), engineOilChangeAndFilter: repaires[i].engineOilChangeAndFilter() };
+            localStorage.setItem(repaires[i].VIN(), JSON.stringify(repaireobject));
+
             i++;
         });
         _self.repaires(repaires);
+        //bake_cookie("repaires", _self.repaires());
+        // setCookie("repaire", _self.repaires(), 100);
+        
+       
         $("#inputRepairesModal").modal("hide");        
     }
     this.deletCar = function (data)
@@ -239,6 +258,39 @@
 
 
 
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function delete_cookie(name) {
+    document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.', window.location.host.toString()].join('');
+}
+function read_cookie(name) {
+    var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
+    result && (result = JSON.parse(result[1]));
+    return result;
+}
+function bake_cookie(name, value) {
+    var cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
+    document.cookie = cookie;
 }
 function InitializeDashboard(data) {
     Dashboard.instance = new Dashboard();
