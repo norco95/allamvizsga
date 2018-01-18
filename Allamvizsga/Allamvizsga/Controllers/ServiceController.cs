@@ -12,9 +12,10 @@ namespace Allamvizsga.Controllers
     public class ServiceController : Controller
     {
         
+        private ServiceBooksContext Servicebook = new ServiceBooksContext();
         private List<HistoryModel>GetHistoryesByVin(String vin)
         {
-            ServiceBooksContext Servicebook = new ServiceBooksContext();
+            
             var historyes = Servicebook.History.ToList();
             List<HistoryModel> result = new List<HistoryModel> { };
             foreach (var history in historyes)
@@ -22,7 +23,7 @@ namespace Allamvizsga.Controllers
                 if (history.CarVIN == vin)
                 {
 
-                    history.Service = null;
+                   
                     result.Add(history);
                 }
             }
@@ -32,7 +33,7 @@ namespace Allamvizsga.Controllers
         }
         private List<ServiceModel> GetCurentServiceCars()
         {
-            ServiceBooksContext Servicebook = new ServiceBooksContext();
+            
             var userID = User.Identity.GetUserName();
             var actservice = Servicebook.ServicePlaces.FirstOrDefault(x => x.Email == userID);
             var Services = Servicebook.Services.ToList();
@@ -50,14 +51,17 @@ namespace Allamvizsga.Controllers
                     {
                         if (serv.Flag == 0)
                         {
-
+                            serv.Car = GetHistoryesByVin(serv.VIN);
                             actualuserrepairs.Add(serv);
                         }
                     }
                     if (serv.Owner.Services != null)
                         serv.Owner.Services = null;
-                    if (serv.Car != null)
-                        serv.Car = null;
+                    foreach(var car in serv.Car)
+                    {
+                        if (car.Service != null)
+                            car.Service = null;
+                    }
                 }
             }
             return actualuserrepairs;
@@ -126,17 +130,7 @@ namespace Allamvizsga.Controllers
             
 
             var historyes = database.History.ToList();
-            List<HistoryModel> result = new List<HistoryModel> { };
-            foreach (var history in historyes)
-            {
-                if (history.CarVIN == newCar.VIN)
-                {
-
-                    history.Service = null;
-                    result.Add(history);
-                }
-            }
-            newCar.Car = result;
+            
             database.Services.Add(newCar);
          
             database.SaveChanges();
@@ -158,14 +152,10 @@ namespace Allamvizsga.Controllers
             data.Service = curentService;
             data.CarVIN = curentService.VIN;
             DateTime localDate = DateTime.Now;
-            data.NextServiceDate = localDate;
+            
             data.Servicedate = localDate;
             data.ServiceId = curentService.ID;
-            foreach(var s in curentService.Car)
-            {
-                s.Service = null;
-            }
-            data.Service = null;
+            
             database.History.Add(data);
             database.SaveChanges();
             success = true;
@@ -187,17 +177,7 @@ namespace Allamvizsga.Controllers
             return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);
         }
 
-        [HttpPost]
-        public ActionResult History(HistoryModel data)
-        {
-            ServiceBooksContext database = new ServiceBooksContext();
-            string message = "";
-            bool success = false;
-            var historyes = GetCurentServiceCars();
-            success = true;
-
-            return Json(new { success = success, messages = message, historyes=historyes}, JsonRequestBehavior.DenyGet);
-        }
+        
 
     }
 }

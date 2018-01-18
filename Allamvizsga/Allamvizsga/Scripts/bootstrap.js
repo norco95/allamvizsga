@@ -1993,7 +1993,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     return this
   }
 
-
+  $("#popover").popover({ trigger: "hover" });
   // AFFIX DATA-API
   // ==============
 

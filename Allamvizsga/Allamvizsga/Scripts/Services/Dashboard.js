@@ -1,6 +1,11 @@
 ﻿function Dashboard() {
     var _self = this;
     this.owner = new OwnerModel();
+    this.actualIndex=null;
+    this.visibleRepaireButtons = ko.observable(true);
+    this.title = ko.observable("");
+    this.actualCarHistoryes=null;
+    this.historyConsol = ko.observable(true);
     this.VIN = ko.observable(null);
     this.Identifier = ko.observable(null);
     this.repaires = ko.observableArray(null);
@@ -12,7 +17,7 @@
         });
 
        
-        this.services(services);
+        _self.services(services);
         services.forEach(function (element) {
             var repaire = new RepaireModel();
             repaire.VIN = element.vin;
@@ -37,11 +42,13 @@
         _self.repaire.nextVisitKm(data.nextVisitKm());
         _self.repaire.currentKm(data.currentKm());
         _self.repaire.nextServiceDate(data.nextServiceDate());
+        _self.repaire.serviceDate(data.serviceDate());
     }
     this.setCarRepairesData = function (data)
     {
-       
-        
+        _self.title("Repaires");
+        _self.historyConsol(false);
+        _self.visibleRepaireButtons(true);
         carrepairedata = data;
         repaires = _self.repaires();
         repaires.forEach(function (element) {
@@ -87,6 +94,12 @@
 
     }
     this.endedCar = function (data) {
+        epaires = _self.repaires();
+        repaires.forEach(function (element) {
+            if (element.VIN == carrepairedata.vin) {
+                _self.changevalues(element);
+            }
+        });
         $.ajax({
             type: "POST",
             url: "/Service/EndCar/",
@@ -146,7 +159,8 @@
                     repaires[i].others (_self.repaire.others());
                     repaires[i].nextVisitKm(_self.repaire.nextVisitKm());
                     repaires[i].currentKm ( _self.repaire.currentKm());
-                    repaires[i].nextServiceDate (_self.repaire.nextServiceDate());     
+                    repaires[i].nextServiceDate(_self.repaire.nextServiceDate());
+                    repaires[i].serviceDate(_self.repaire.serviceDate());
             }
             i++;
         });
@@ -188,33 +202,40 @@
     }
     this.history=function(data)
     {
-        var s = _self.services.historyes();
+        _self.title("Historyes");
+        _self.historyConsol(true);
+        _self.visibleRepaireButtons(false);
+        $("#inputRepairesModal").modal("show");
+        
+        _self.actualCarHistoryes = data.historyes();
+        _self.actualIndex = _self.actualCarHistoryes.length - 1;
+        _self.changevalues(_self.actualCarHistoryes[_self.actualIndex]);
+
+
     }
-   // this.history=function(data)
-    //{
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "/Service/History/",
-    //        data: {
-                
-    //                    CarVIN: data.vin()
-                    
-                
-    //        },
+    this.firstHistory=function()
+    {
+        
+        _self.changevalues(_self.actualCarHistoryes[0]);
+        _self.actualIndex = 0;
+    }
+    this.previousHistory = function () {
+        if (_self.actualIndex > 0)
+            _self.actualIndex--;
+        _self.changevalues(_self.actualCarHistoryes[_self.actualIndex]);
 
-    //        success: function (msg) {
 
-    //            if (msg.success == true) {
-    //                var historyes = _.map(msg.historyes, function (his, index) {
-    //                    return new RepaireModel(his);
-    //                });
-    //                _self.historyes(historyes);
-                   
-    //               }
-    //        },
-    //        dataType: "json"
-    //    });
-    //}
+    }
+    this.nextHistory=function(){
+        if (_self.actualIndex < _self.actualCarHistoryes.length - 1)
+            _self.actualIndex++;
+        _self.changevalues(_self.actualCarHistoryes[_self.actualIndex]);
+    }
+    this.lastHistory = function () {
+        _self.changevalues(_self.actualCarHistoryes[_self.actualCarHistoryes.length-1]);
+        _self.actualIndex = _self.actualCarHistoryes.length - 1;
+    }
+  
 
 
 

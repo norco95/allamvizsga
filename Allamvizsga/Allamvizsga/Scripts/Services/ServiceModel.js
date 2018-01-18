@@ -13,7 +13,7 @@
     
    if (data != null) {
 
-       var historyes = _.map(data.Car, function (hisory, index) {
+       var historyes = _.map(data.Car, function (history, index) {
            return new RepaireModel(history);
 
        });

@@ -383,6 +383,9 @@
     <Content Include="Views\Service\_CurentCars.cshtml" />
     <Content Include="Views\Service\_InputCar.cshtml" />
     <Content Include="Views\Service\_Repaires.cshtml" />
+    <Content Include="Views\Service\_HistoryConsol.cshtml" />
+    <Content Include="Views\Service\_InputRepaires.cshtml" />
+    <Content Include="Views\Service\_Historyes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\fonts\glyphicons-halflings-regular.woff" />
