@@ -9,6 +9,8 @@
     this.flag = ko.observable(null);
     this.serviceId = ko.observable(null);
     this.historyes = ko.observableArray(null);
+    this.errorIndicator = ko.observable(false);
+    
     
     
    if (data != null) {

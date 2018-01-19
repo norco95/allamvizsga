@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="form-group row">
-    <div class="col-sm-3">Curent km:</div>
+    <div class="col-sm-3" data-bind="style: {color : currentKmError() ? 'red' : 'black' }">Curent km:</div>
     <div class="col-sm-7">
 
 
@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="form-group row">
-    <div class="col-sm-3">Next visit km:</div>
+    <div class="col-sm-3" data-bind="style: {color : nextVisitKmError() ? 'red' : 'black' }">Next visit km:</div>
     <div class="col-sm-7">
 
         <input type="text" class="form-control" data-bind="value: repaire.nextVisitKm">
@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="form-group row">
-    <div class="col-sm-3">Next visit Date</div>
+    <div class="col-sm-3" data-bind="style: {color : nextDerviceDateError() ? 'red' : 'black' }" >Next visit Date</div>
     <div class="col-sm-7">
 
         <input type="date" class="form-control" data-bind="value: repaire.nextServiceDate">

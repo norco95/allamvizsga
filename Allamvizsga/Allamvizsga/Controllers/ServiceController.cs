@@ -92,34 +92,23 @@ namespace Allamvizsga.Controllers
         {
             bool success = false;
             var message = "";
-         
-            
-
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ApplicationDbContext.Create()));
             var currentUser = manager.FindById(User.Identity.GetUserId()).Email;
-            
             ServiceBooksContext database = new ServiceBooksContext();
-            
             var owners = database.Owners.FirstOrDefault(i => i.PhoneNumber == data.Owner.PhoneNumber);
-       
-                ServiceModel newCar = new ServiceModel();
-                var curentService = database.ServicePlaces.FirstOrDefault(i => i.Email == currentUser);
-
-                
-            
+            ServiceModel newCar = new ServiceModel();
+            var curentService = database.ServicePlaces.FirstOrDefault(i => i.Email == currentUser);
             if (owners != null)
             {
                 newCar.Owner = owners;
                 newCar.PhoneNumber = owners.PhoneNumber;
-
             }
             else
             {
                 newCar.Owner = data.Owner;
                 newCar.PhoneNumber = data.Owner.PhoneNumber;
             }
-
-
+            
             newCar.Identifier = data.Identifier;
             newCar.VIN = data.VIN;
             newCar.Price = 0;
@@ -127,14 +116,9 @@ namespace Allamvizsga.Controllers
             newCar.ServiceDate = DateTime.Now;
             newCar.Flag = 0;
             newCar.ServiceId = curentService.ServiceId;
-            
-
-            var historyes = database.History.ToList();
-            
+           
             database.Services.Add(newCar);
-         
             database.SaveChanges();
-            
             success = true;
 
             var actualuserrepairs = GetCurentServiceCars();
@@ -145,19 +129,27 @@ namespace Allamvizsga.Controllers
         {
             bool success = false;
             var message = "";
-            ServiceBooksContext database = new ServiceBooksContext();
-            var curentService = database.Services.FirstOrDefault(i => i.ID == data.Service.ID);
-            curentService.Flag = 1;
-            curentService.Car = null;
-            data.Service = curentService;
-            data.CarVIN = curentService.VIN;
-            DateTime localDate = DateTime.Now;
             
-            data.Servicedate = localDate;
-            data.ServiceId = curentService.ID;
-            
-            database.History.Add(data);
-            database.SaveChanges();
+            var curentService = Servicebook.Services.FirstOrDefault(i => i.ID == data.Service.ID);
+           // curentService.Flag = 1;
+            curentService.Price = data.Service.Price;
+            var s = new HistoryModel();
+            s = data;
+            s.CarVIN = curentService.VIN;
+            s.Servicedate = DateTime.Now;
+            if (data.Servicedate == null)
+            {
+                s.NextServiceDate = DateTime.Now;
+            }
+            if(s.Others==null)
+            {
+                s.Others = "";
+            }
+            s.OwnerPhoneNumber = curentService.PhoneNumber;
+            s.Service = curentService;
+
+           // Servicebook.History.Add(s);
+            Servicebook.SaveChanges();
             success = true;
             var actualuserrepairs = GetCurentServiceCars();
             return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);

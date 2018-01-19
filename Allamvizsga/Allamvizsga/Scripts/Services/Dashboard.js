@@ -1,6 +1,11 @@
 ﻿function Dashboard() {
     var _self = this;
+    
+    this.nextDerviceDateError = ko.observable(false);
+    this.currentKmError = ko.observable(false);
+    this.nextVisitKmError = ko.observable(false);
     this.owner = new OwnerModel();
+    this.errorIndicator = ko.observable(false);
     this.actualIndex=null;
     this.visibleRepaireButtons = ko.observable(true);
     this.title = ko.observable("");
@@ -29,7 +34,7 @@
     var carrepairedata = null;
     this.changevalues=function(data)
     {
-        _self.repaire.VIN=data.VIN;
+  
         _self.repaire.ownerPhoneNumber = data.ownerPhoneNumber;       
         _self.repaire.engineOilChangeAndFilter(data.engineOilChangeAndFilter());
         _self.repaire.airFilter(data.airFilter());
@@ -44,33 +49,35 @@
         _self.repaire.nextServiceDate(data.nextServiceDate());
         _self.repaire.serviceDate(data.serviceDate());
     }
+    this.setRepaireValues = function (data) {
+        _self.repaire.VIN = data.VIN;
+        _self.repaire.engineOilChangeAndFilter(data.engineOilChangeAndFilter);
+        _self.repaire.airFilter(data.airFilter);
+        _self.repaire.pollenFilter(data.pollenFilter);
+        _self.repaire.fuelFilter(data.fuelFilter);
+        _self.repaire.breakFluid(data.breakFluid);
+        _self.repaire.breakDiscAndPads(data.breakDiscAndPads);
+        _self.repaire.gearOilOrTransmissionFluid(data.gearOilOrTransmissionFluid);
+        _self.repaire.others(data.others);
+        _self.repaire.nextVisitKm(data.nextVisitKm);
+        _self.repaire.currentKm(data.currentKm);
+        _self.repaire.nextServiceDate(data.nextServiceDate);
+        
+    }
     this.setCarRepairesData = function (data)
     {
         
-        var cookierepaires = getCookie("repaires");
-        if (cookierepaires != "") {
-            repaires = cookierepaires;
-        }
-        else {
-            repaires = _self.repaires();
-        }
+        var retrievedObject = JSON.parse(localStorage.getItem(data.vin()));
+        if (retrievedObject != null)
+            _self.setRepaireValues(retrievedObject);
+        else
+            _self.changevalues(new RepaireModel());
 
-            
-        
         _self.title("Repaires");
         _self.historyConsol(false);
         _self.visibleRepaireButtons(true);
         carrepairedata = data;
-        
-        repaires.forEach(function (element) {
-            if (element.VIN == carrepairedata.vin) {
-                _self.changevalues(element)
-               
-            }
-        });
-       
-       
-        var s = _self.repaire;
+      
         $("#inputRepairesModal").modal("show");
        
     }
@@ -105,86 +112,128 @@
 
     }
     this.endedCar = function (data) {
-        epaires = _self.repaires();
-        repaires.forEach(function (element) {
-            if (element.VIN == carrepairedata.vin) {
-                _self.changevalues(element);
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: "/Service/EndCar/",
-            data: {
-                
-                BreakFluid: _self.repaire.breakFluid,
-                EngineOilChangeAndFilter: _self.repaire.engineOilChangeAndFilter,
-                AirFilter: _self.repaire.airFilter,
-                PollenFilter: _self.repaire.pollenFilter,
-                FuelFilter: _self.repaire.fuelFilter,
-                BreakDiscAndPads: _self.repaire.breakDiscAndPads,
-                GearOilOrTransmissionFluid: _self.repaire.gearOilOrTransmissionFluid,
-                Others: _self.repaire.others,
-                NextVisitKm: _self.repaire.nextVisitKm,
-                CurentKm: _self.repairecurrentKm,
-                NextServiceDate: _self.repaire.nextServiceDate,
-                
-               
-                Service:
-                    {
-                        ID: data.id
+        
+       
+        data.errorIndicator(false);
+        var retrievedObject = JSON.parse(localStorage.getItem(data.vin()));
+        if (retrievedObject != null)
+            _self.setRepaireValues(retrievedObject);
+        else
+            _self.changevalues(new RepaireModel());
+
+      
+        if (data.price() <= 0)
+            data.errorIndicator(true);
+        
+
+        if (data.errorIndicator()==false) {
+            $.ajax({
+                type: "POST",
+                url: "/Service/EndCar/",
+                data: {
+
+                    BreakFluid: _self.repaire.breakFluid,
+                    EngineOilChangeAndFilter: _self.repaire.engineOilChangeAndFilter,
+                    AirFilter: _self.repaire.airFilter,
+                    PollenFilter: _self.repaire.pollenFilter,
+                    FuelFilter: _self.repaire.fuelFilter,
+                    BreakDiscAndPads: _self.repaire.breakDiscAndPads,
+                    GearOilOrTransmissionFluid: _self.repaire.gearOilOrTransmissionFluid,
+                    Others: _self.repaire.others,
+                    NextVisitKm: _self.repaire.nextVisitKm,
+                    CurentKm: _self.repairecurrentKm,
+                    NextServiceDate: _self.repaire.nextServiceDate,
+
+
+                    Service:
+                        {
+                            Price: data.price,
+                            ID: data.id
+                        }
+
+                },
+
+                success: function (msg) {
+
+                    if (msg.success == true) {
+                        var services = _.map(msg.newCar, function (serv, index) {
+                            return new ServiceModel(serv);
+                        });
+                        _self.services(services);
+                        services.forEach(function (element) {
+                            var repaire = new RepaireModel();
+                            repaire.VIN = element.vin;
+                            _self.repaires.push(repaire);
+                        });
                     }
-
-             },
-
-            success: function (msg) {
-
-                if (msg.success == true) {
-                    var services = _.map(msg.newCar, function (serv, index) {
-                        return new ServiceModel(serv);
-                    });
-                    _self.services(services);
-                    services.forEach(function (element) {
-                        var repaire = new RepaireModel();
-                        repaire.VIN = element.vin;
-                        _self.repaires.push(repaire);
-                    });
-                }
-            },
-            dataType: "json"
-        });
+                },
+                dataType: "json"
+            });
+        }
     }
     this.saveRepair = function ()
     {
-        var i = 0;
-        repaires = _self.repaires();
-        repaires.forEach(function (element) {
-            if (element.VIN == carrepairedata.vin) {
+        var error=false;
+        _self.nextDerviceDateError(false);
+        _self.currentKmError(false);
+        _self.nextVisitKmError(false);
+      
+        if (_self.repaire.nextServiceDate() == "" || _self.repaire.nextServiceDate() == null) {
+            _self.nextDerviceDateError(true);
+            error=true;
+        }
+        else {
+            if (Date.parse(_self.repaire.nextServiceDate()) < Date.parse(new Date())) {
+                _self.nextDerviceDateError(true);
+                error=true;
+                    }
+             }
 
-                repaires[i].engineOilChangeAndFilter(_self.repaire.engineOilChangeAndFilter());
-                repaires[i].airFilter(_self.repaire.airFilter());
-                repaires[i].pollenFilter(_self.repaire.pollenFilter());
-                repaires[i].fuelFilter(_self.repaire.fuelFilter());
-                repaires[i].breakFluid(_self.repaire.breakFluid());
-                repaires[i].breakDiscAndPads(_self.repaire.breakDiscAndPads());
-                repaires[i].gearOilOrTransmissionFluid(_self.repaire.gearOilOrTransmissionFluid());
-                repaires[i].others(_self.repaire.others());
-                repaires[i].nextVisitKm(_self.repaire.nextVisitKm());
-                repaires[i].currentKm(_self.repaire.currentKm());
-                repaires[i].nextServiceDate(_self.repaire.nextServiceDate());
-                repaires[i].serviceDate(_self.repaire.serviceDate());
+        if (_self.repaire.currentKm() > _self.repaire.nextVisitKm())
+        {
+            _self.currentKmError(true);
+            _self.nextVisitKmError(true);
+            error = true;
+        }
 
-            }
-            var repaireobject = { airFilter: repaires[i].airFilter(), engineOilChangeAndFilter: repaires[i].engineOilChangeAndFilter() };
-            localStorage.setItem(repaires[i].VIN(), JSON.stringify(repaireobject));
+        if (_self.repaire.currentKm() <= 0)
+        {
+            _self.currentKmError(true);
+            error = true;
+        }
 
-            i++;
-        });
-        _self.repaires(repaires);
-        //bake_cookie("repaires", _self.repaires());
-        // setCookie("repaire", _self.repaires(), 100);
+
+        if (_self.repaire.nextVisitKm()<=0) {
+            _self.nextVisitKmError(true);
+            error = true;
+        }
+
+
+        if (error == false) {
+
+        var repaireobject = {
+            pollenFilter: _self.repaire.pollenFilter(),
+            VIN: carrepairedata.vin,
+            airFilter: _self.repaire.airFilter(),
+            engineOilChangeAndFilter: _self.repaire.engineOilChangeAndFilter(),
+            fuelFilter: _self.repaire.fuelFilter(),
+            breakFluid: _self.repaire.breakFluid(),
+            breakDiscAndPads: _self.repaire.breakDiscAndPads(),
+            gearOilOrTransmissionFluid: _self.repaire.gearOilOrTransmissionFluid(),
+            others: _self.repaire.others(),
+            nextVisitKm: _self.repaire.nextVisitKm(),
+            currentKm: _self.repaire.currentKm(),
+            nextServiceDate: _self.repaire.nextServiceDate()
+            
+        };
+            localStorage.setItem(carrepairedata.vin(), JSON.stringify(repaireobject));
+
         
        
-        $("#inputRepairesModal").modal("hide");        
+       
+            $("#inputRepairesModal").modal("hide");
+        }
+                
     }
     this.deletCar = function (data)
     {
@@ -225,9 +274,13 @@
         _self.historyConsol(true);
         _self.visibleRepaireButtons(false);
         $("#inputRepairesModal").modal("show");
-        
+        _self.actualCarHistoryes = null;
         _self.actualCarHistoryes = data.historyes();
         _self.actualIndex = _self.actualCarHistoryes.length - 1;
+        if (_self.actualIndex < 1)
+            _self.changevalues(new RepaireModel());
+        else
+
         _self.changevalues(_self.actualCarHistoryes[_self.actualIndex]);
 
 
@@ -254,44 +307,9 @@
         _self.changevalues(_self.actualCarHistoryes[_self.actualCarHistoryes.length-1]);
         _self.actualIndex = _self.actualCarHistoryes.length - 1;
     }
-  
+ 
+}
 
-
-
-}
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-function delete_cookie(name) {
-    document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.', window.location.host.toString()].join('');
-}
-function read_cookie(name) {
-    var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-    result && (result = JSON.parse(result[1]));
-    return result;
-}
-function bake_cookie(name, value) {
-    var cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
-    document.cookie = cookie;
-}
 function InitializeDashboard(data) {
     Dashboard.instance = new Dashboard();
 
