@@ -83,3 +83,9 @@ C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\obj\D
 C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\obj\Debug\Allamvizsga.pdb
 C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\obj\Debug\ServiceBook.csprojResolveAssemblyReference.cache
 C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\obj\Debug\Allamvizsga.Migrations.migrationname.resources
+C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\bin\System.Net.Http.Formatting.dll
+C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\bin\System.Web.Http.dll
+C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\bin\System.Web.Http.WebHost.dll
+C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\bin\System.Net.Http.Formatting.xml
+C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\bin\System.Web.Http.xml
+C:\Users\OrbanNorbert\Documents\GitHub\allamvizsga\Allamvizsga\Allamvizsga\bin\System.Web.Http.WebHost.xml

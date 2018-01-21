@@ -1,6 +1,6 @@
 ﻿function Dashboard() {
     var _self = this;
-    
+    this.inputCarError = (new ErrorModel());
     this.nextDerviceDateError = ko.observable(false);
     this.currentKmError = ko.observable(false);
     this.nextVisitKmError = ko.observable(false);
@@ -62,6 +62,7 @@
         _self.repaire.nextVisitKm(data.nextVisitKm);
         _self.repaire.currentKm(data.currentKm);
         _self.repaire.nextServiceDate(data.nextServiceDate);
+        _self.repaire.error(data.error);
         
     }
     this.setCarRepairesData = function (data)
@@ -81,38 +82,99 @@
         $("#inputRepairesModal").modal("show");
        
     }
-    this.addCar = function () {  //addCar
-        
-        $.ajax({
-            type: "POST",
-            url: "/Service/AddCar/",
-            data: {
-                VIN: _self.VIN,
-                Identifier: _self.Identifier,            
-                Owner: {
-                    FirstName: _self.owner.firstName(),
-                    LastName: _self.owner.lastName(),
-                    Email: _self.owner.email(),
-                    PhoneNumber: _self.owner.phoneNumber()
-                }
-                
-            },
-
-            success: function (msg) {
-                if (msg.success == true) {
-                    var services = _.map(msg.newCar, function (serv, index) {
-                        return new ServiceModel(serv);
-                    });
-                    _self.services(services);
-                    $("#inputCarModal").modal("hide");
-                }
-            },
-            dataType: "json"
+    this.addCar = function ()
+    {
+       
+        var error = false;
+        var vin ="";
+        if (_self.VIN() != null) {
+            vin = _self.VIN();
+        }
+        if (vin.length<17) {
+            _self.inputCarError.vinError(true);
+            error = true;
+        }
+        var services = _self.services();
+        services.forEach(function (element) {
+            if (element.vin() == vin) {
+                _self.inputCarError.vinError(true);
+                error = true;
+            }
         });
+       
+        if (_self.Identifier == null || _self.Identifier=="") {
+            _self.inputCarError.identifierError(true);
+            error = true;
+        }
+
+        if (_self.owner.firstName() == null || _self.owner.firstName()=="") {
+            _self.inputCarError.ownerFirstNameError(true);
+            error = true;
+        }
+        if (_self.owner.lastName() == null || _self.owner.lastName()=="") {
+            _self.inputCarError.ownerLastNameError(true);
+            error = true;
+        }
+        if (_self.owner.email() == null || _self.owner.email() == "") {
+            _self.inputCarError.ownerEmailError(true);
+            error = true;
+        }
+        else
+            if (validateEmail(_self.owner.email()) == false)
+            {
+                _self.inputCarError.ownerEmailError(true);
+                error = true;
+            }
+        if (_self.owner.phoneNumber()== null || _self.owner.phoneNumber()== "") {
+            _self.inputCarError.ownerPhoneNumberError(true);
+            error = true;
+        }
+
+        if (error == false) {
+            $.ajax({
+
+                type: "POST",
+                url: "/Service/AddCar/",
+                data: {
+                    VIN: _self.VIN,
+                    Identifier: _self.Identifier,
+                    Owner: {
+                        FirstName: _self.owner.firstName(),
+                        LastName: _self.owner.lastName(),
+                        Email: _self.owner.email(),
+                        PhoneNumber: _self.owner.phoneNumber()
+                    }
+
+                },
+
+                success: function (msg) {
+                    if (msg.success == true) {
+                        var services = _.map(msg.newCar, function (serv, index) {
+                            return new ServiceModel(serv);
+                        });
+                        _self.services(services);
+                        $("#inputCarModal").modal("hide");
+                    }
+                },
+                dataType: "json"
+            });
+        }
+    }
+    this.inputCar=function()
+    {
+        
+        _self.Identifier(null);
+        _self.VIN (null);
+        _self.owner.phoneNumber(null);
+        _self.owner.email(null);
+        _self.owner.firstName(null);
+        _self.owner.lastName(null);
 
     }
     this.endedCar = function (data) {
         
+       
+        var error = false;
        
         data.errorIndicator(false);
         var retrievedObject = JSON.parse(localStorage.getItem(data.vin()));
@@ -122,25 +184,31 @@
             _self.changevalues(new RepaireModel());
 
       
-        if (data.price() <= 0)
+        if (data.price() <= 0) {
+            data.priceError(true);
+            error = true;
+        }
+        if (_self.repaire.error() == true)
+        {
             data.errorIndicator(true);
-        
+            error = true;;
+        }
 
-        if (data.errorIndicator()==false) {
+        if (error==false) {
             $.ajax({
                 type: "POST",
                 url: "/Service/EndCar/",
                 data: {
 
                     BreakFluid: _self.repaire.breakFluid,
-                    EngineOilChangeAndFilter: _self.repaire.engineOilChangeAndFilter,
+                    EngineOilAndFilter: _self.repaire.engineOilChangeAndFilter,
                     AirFilter: _self.repaire.airFilter,
                     PollenFilter: _self.repaire.pollenFilter,
                     FuelFilter: _self.repaire.fuelFilter,
                     BreakDiscAndPads: _self.repaire.breakDiscAndPads,
                     GearOilOrTransmissionFluid: _self.repaire.gearOilOrTransmissionFluid,
                     Others: _self.repaire.others,
-                    NextVisitKm: _self.repaire.nextVisitKm,
+                    NextKMVisit: _self.repaire.nextVisitKm,
                     CurentKm: _self.repairecurrentKm,
                     NextServiceDate: _self.repaire.nextServiceDate,
 
@@ -211,19 +279,21 @@
 
         if (error == false) {
 
-        var repaireobject = {
-            pollenFilter: _self.repaire.pollenFilter(),
-            VIN: carrepairedata.vin,
-            airFilter: _self.repaire.airFilter(),
-            engineOilChangeAndFilter: _self.repaire.engineOilChangeAndFilter(),
-            fuelFilter: _self.repaire.fuelFilter(),
-            breakFluid: _self.repaire.breakFluid(),
-            breakDiscAndPads: _self.repaire.breakDiscAndPads(),
-            gearOilOrTransmissionFluid: _self.repaire.gearOilOrTransmissionFluid(),
-            others: _self.repaire.others(),
-            nextVisitKm: _self.repaire.nextVisitKm(),
-            currentKm: _self.repaire.currentKm(),
-            nextServiceDate: _self.repaire.nextServiceDate()
+            _self.repaire.error(false);
+            var repaireobject = {
+                pollenFilter: _self.repaire.pollenFilter(),
+                VIN: carrepairedata.vin,
+                airFilter: _self.repaire.airFilter(),
+                engineOilChangeAndFilter: _self.repaire.engineOilChangeAndFilter(),
+                fuelFilter: _self.repaire.fuelFilter(),
+                breakFluid: _self.repaire.breakFluid(),
+                breakDiscAndPads: _self.repaire.breakDiscAndPads(),
+                gearOilOrTransmissionFluid: _self.repaire.gearOilOrTransmissionFluid(),
+                others: _self.repaire.others(),
+                nextVisitKm: _self.repaire.nextVisitKm(),
+                currentKm: _self.repaire.currentKm(),
+                nextServiceDate: _self.repaire.nextServiceDate(),
+                error: _self.repaire.error()
             
         };
             localStorage.setItem(carrepairedata.vin(), JSON.stringify(repaireobject));
@@ -308,6 +378,11 @@
         _self.actualIndex = _self.actualCarHistoryes.length - 1;
     }
  
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    return re.test(email);
 }
 
 function InitializeDashboard(data) {

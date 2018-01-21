@@ -13,6 +13,7 @@
     this.nextVisitKm = ko.observable("");
     this.serviceDate = ko.observable(null);
     this.nextServiceDate = ko.observable(null);
+    this.error = ko.observable(true);
 
     if (data != null) {
         this.engineOilChangeAndFilter(data.EngineOilAndFilter);

@@ -1,26 +1,26 @@
 ﻿<form>
     <div class="form-group">
-        <label for="VIN">VIN:</label>
+        <label for="VIN" data-bind="style: {color : inputCarError.vinError() ? 'red' : 'black' }">VIN:</label>
         <input type="text" class="form-control" id="VIN" data-bind="value: VIN" >
     </div>
     <div class="form-group">
-        <label for="Identifier">Identifier:</label>
+        <label for="Identifier" data-bind="style: {color : inputCarError.identifierError() ? 'red' : 'black' }">Identifier:</label>
         <input type="text" class="form-control" id="Identifier" data-bind="value: Identifier">
     </div>
     <div class="form-group">
-        <label for="OwnerFirstName">Owner First Name:</label>
+        <label for="OwnerFirstName" data-bind="style: {color : inputCarError.ownerFirstNameError() ? 'red' : 'black' }">Owner First Name:</label>
         <input type="text" class="form-control" id="OwnerFirstName" data-bind="value: owner.firstName" >
     </div>
     <div class="form-group">
-        <label for="OwnerLastName">Owner Last Name:</label>
+        <label for="OwnerLastName" data-bind="style: {color : inputCarError.ownerLastNameError() ? 'red' : 'black' }">Owner Last Name:</label>
         <input type="text" class="form-control" id="OwnerLastName" data-bind="value: owner.lastName">
     </div>
     <div class="form-group">
-        <label for="OwnerPhonenumber">Owner Phone:</label>
+        <label for="OwnerPhonenumber" data-bind="style: {color : inputCarError.ownerPhoneNumberError() ? 'red' : 'black' }" >Owner Phone:</label>
         <input type="text" class="form-control" id="OwnerPhone" data-bind="value: owner.phoneNumber">
     </div>
     <div class="form-group">
-        <label for="OwnerEmail">Owner Email:</label>
+        <label for="OwnerEmail" data-bind="style: {color : inputCarError.ownerEmailError() ? 'red' : 'black' }">Owner Email:</label>
         <input type="email" class="form-control" id="OwnerEmail" data-bind="value: owner.email">
     </div>
 </form>

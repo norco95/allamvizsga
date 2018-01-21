@@ -4,7 +4,7 @@
 
 <div class="container">
 
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#inputCarModal">Add</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal"  data-bind="click: inputCar" data-target="#inputCarModal">Add</button>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -19,9 +19,8 @@
         </thead>
         <tbody data-bind="foreach: services">
           
-            
                 
-           <tr>
+           <tr data-bind="style: {color : errorIndicator() ? 'red' : 'black' }">
               
                 <td data-bind="text: identifier"></td>
                 <td data-bind="text: owner.lastName"></td>
@@ -32,7 +31,7 @@
                             <input class="form-control input-sm" id="ex1" type="text" data-bind="value: price " >
                         </div>
                         <div class="col-xs-1">
-                            <span class="glyphicon glyphicon-euro" data-bind="style: {color : errorIndicator() ? 'red' : 'black' }"></span>
+                            <span class="glyphicon glyphicon-euro" data-bind="style: {color : priceError() ? 'red' : 'black' }"></span>
                         </div>
 
                     </div>
@@ -46,7 +45,7 @@
                     </button>
                 </td>
             </tr>
-            <!-- /ko -->
+            
         </tbody>
     </table>
     </div>

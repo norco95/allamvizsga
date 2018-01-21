@@ -10,6 +10,7 @@
     this.serviceId = ko.observable(null);
     this.historyes = ko.observableArray(null);
     this.errorIndicator = ko.observable(false);
+    this.priceError = ko.observable(false);
     
     
     

@@ -6,6 +6,12 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Allamvizsga.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net.Mail;
+using System.Net;
+using System.Security.Policy;
+using System.Text;
+using System.IO;
+using System.Net.Http;
 
 namespace Allamvizsga.Controllers
 {
@@ -131,7 +137,7 @@ namespace Allamvizsga.Controllers
             var message = "";
             
             var curentService = Servicebook.Services.FirstOrDefault(i => i.ID == data.Service.ID);
-           // curentService.Flag = 1;
+            curentService.Flag = 1;
             curentService.Price = data.Service.Price;
             var s = new HistoryModel();
             s = data;
@@ -148,9 +154,54 @@ namespace Allamvizsga.Controllers
             s.OwnerPhoneNumber = curentService.PhoneNumber;
             s.Service = curentService;
 
-           // Servicebook.History.Add(s);
+            Servicebook.History.Add(s);
             Servicebook.SaveChanges();
             success = true;
+
+           
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.To.Add(s.Service.Owner.Email);
+            mailMessage.From = new MailAddress("info.servicebook@gmail.com");
+            mailMessage.Subject = "Your car with identifier: "+s.Service.Identifier+" it is ready!";
+            mailMessage.Body = "Hello " +s.Service.Owner.FirstName+" "+s.Service.Owner.LastName + "!\n\n"+" Your Car with identifier: "+s.Service.Identifier +" it is ready! "+ " The repairs costs: "+s.Service.Price+" EURO";
+            mailMessage.Body += "\n List of repaires: ";
+            if (s.AirFilter == true)
+                mailMessage.Body += "\nAir Filter";
+            if (s.BreakDiscAndPAds == true)
+                mailMessage.Body += "\nBreak Disc And Pads";
+            if (s.BreakFluid == true)
+                mailMessage.Body += "\n Break Fluid";
+            if (s.EngineOilAndFilter == true)
+                mailMessage.Body += "\n Engine Oil And Filter";
+            if (s.FuelFilter == true)
+                mailMessage.Body += "\n Fuel Filter";
+            if (s.GearOilOrTransmissionFluid == true)
+                mailMessage.Body += "\n Gear Oil Or Transmission Fluid";
+            if (s.PollenFilter == true)
+                mailMessage.Body += "\n Pollen Filter";
+           
+            mailMessage.Body += "\n Others:\n"+s.Others;
+            mailMessage.Body += "\n Next service date: " + s.NextServiceDate.ToString();
+            mailMessage.Body += "\n Next service km: " + s.NextKmVisit;
+
+
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            smtpClient.Port = 587;
+            smtpClient.EnableSsl = true;
+
+            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential("info.servicebook@gmail.com", "allamvizsga");
+
+
+
+            smtpClient.Send(mailMessage);
+           
+
+
+
+
             var actualuserrepairs = GetCurentServiceCars();
             return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);
         }
@@ -170,6 +221,5 @@ namespace Allamvizsga.Controllers
         }
 
         
-
     }
 }
