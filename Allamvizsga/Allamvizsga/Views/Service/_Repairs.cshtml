@@ -1,0 +1,135 @@
+﻿
+<div class="container">
+
+    @Html.Partial("_HistoryConsol")
+   
+
+ 
+    
+    <div class="row">
+  
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-5">Engine oil and filter</div>
+            <div class="col-sm-1">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <!--ko if: visibleRepairButtons-->
+                        <input class="form-check-input" type="checkbox" data-bind="checked: repair.engineOilChangeAndFilter">
+                        <!-- /ko -->
+                        <!--ko if: historyConsol-->
+                        <input class="form-check-input" type="checkbox" disabled="disabled" data-bind="checked: repair.engineOilChangeAndFilter">
+                        <!-- /ko -->
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-5">Air filter</div>
+            <div class="col-sm-1">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <!--ko if: visibleRepairButtons-->
+                        <input class="form-check-input" type="checkbox" data-bind="checked: repair.airFilter">
+                        <!-- /ko -->
+                        <!--ko if: historyConsol-->
+                        <input class="form-check-input" type="checkbox" disabled="disabled" data-bind="checked: repair.airFilter">
+                        <!-- /ko -->
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-5">Pollen filter</div>
+            <div class="col-sm-1">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <!--ko if: visibleRepairButtons-->
+                        <input class="form-check-input" type="checkbox" data-bind="checked: repair.pollenFilter">
+                        <!-- /ko -->
+                        <!--ko if: historyConsol-->
+                        <input class="form-check-input" type="checkbox" disabled="disabled" data-bind="checked: repair.pollenFilter">
+                        <!-- /ko -->
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-5">Fuel filter</div>
+            <div class="col-sm-1">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <!--ko if: visibleRepairButtons-->
+                        <input class="form-check-input" type="checkbox" data-bind="checked: repair.fuelFilter">
+                        <!-- /ko -->
+                        <!--ko if: historyConsol-->
+                        <input class="form-check-input" type="checkbox" disabled="disabled" data-bind="checked: repair.fuelFilter">
+                        <!-- /ko -->
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-5">Break fluid</div>
+            <div class="col-sm-1">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <!--ko if: visibleRepairButtons-->
+                        <input class="form-check-input" type="checkbox"  data-bind="checked: repair.breakFluid">
+                        <!-- /ko -->
+                        <!--ko if: historyConsol-->
+                        <input class="form-check-input" type="checkbox" disabled="disabled" data-bind="checked: repair.breakFluid">
+                        <!-- /ko -->
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-5">Break Disc and Pads</div>
+            <div class="col-sm-1">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <!--ko if: visibleRepairButtons-->
+                        <input class="form-check-input" type="checkbox" data-bind="checked: repair.breakDiscAndPads">
+                        <!-- /ko -->
+                        <!--ko if: historyConsol-->
+                        <input class="form-check-input" type="checkbox" disabled="disabled" data-bind="checked: repair.breakDiscAndPads">
+                        <!-- /ko -->
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-5">Gear oil or transmission fluid</div>
+            <div class="col-sm-1">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <!--ko if: visibleRepairButtons-->
+                        <input class="form-check-input" type="checkbox" data-bind="checked: repair.gearOilOrTransmissionFluid">
+                        <!-- /ko -->
+                        <!--ko if: historyConsol-->
+                        <input class="form-check-input" type="checkbox" disabled="disabled" data-bind="checked: repair.gearOilOrTransmissionFluid">
+                        <!-- /ko -->
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+    </div>
+   
+
+    <div class="row" data-bind="if: visibleRepairButtons">
+        @Html.Partial("_InputRepairs")     
+    </div>
+    <div class="row" data-bind="if:  historyConsol">
+        @Html.Partial("_Histories")
+    </div>
+
+</div>
+

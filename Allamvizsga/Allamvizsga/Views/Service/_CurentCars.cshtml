@@ -13,7 +13,7 @@
                 <th>OwnerPhoneNumber</th>
                 <th>Price</th>
                 <th>History</th>
-                <th>Repaires</th>
+                <th>Repair</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -37,7 +37,7 @@
                     </div>
                 </td>
                 <td><button type="button" class="btn-primary btn-sm" data-toggle="modal" data-bind="click: $root.history.bind($data)">History</button></td>
-                <td><button type="button" class="btn-primary btn-sm" data-toggle="modal" data-bind="click: $root.setCarRepairesData.bind($data)">Repaires</button></td>
+                <td><button type="button" class="btn-primary btn-sm" data-toggle="modal" data-bind="click: $root.setCarRepairsData.bind($data)">Repairs</button></td>
                 <td><button type="button" class="btn-primary btn-sm" data-bind="click: $root.endedCar.bind($data)">Ended</button></td>
                 <td>
                     <button type="button" class="close" data-bind="click:$root.deletCar.bind($data)" aria-label="Close">
@@ -77,7 +77,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="inputRepairesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="inputRepairsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="vertical-alignment-helper">
             <div class="modal-dialog vertical-align-center">
                 <div class="modal-content">
@@ -89,8 +89,8 @@
                         <h4 class="modal-title" data-bind="text: title"></h4>
 
                     </div>
-                    <div class="modal-body">@Html.Partial("_Repaires")</div>
-                    <div class="modal-footer" data-bind="visible: visibleRepaireButtons">
+                    <div class="modal-body">@Html.Partial("_Repairs")</div>
+                    <div class="modal-footer" data-bind="visible: visibleRepairButtons">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-info btn-lg" data-bind="click: saveRepair">Save</button>
                     </div>

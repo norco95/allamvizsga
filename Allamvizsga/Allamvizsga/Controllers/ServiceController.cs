@@ -19,12 +19,12 @@ namespace Allamvizsga.Controllers
     {
         
         private ServiceBooksContext Servicebook = new ServiceBooksContext();
-        private List<HistoryModel>GetHistoryesByVin(String vin)
+        private List<HistoryModel>GetHistoriesByVin(String vin)
         {
             
-            var historyes = Servicebook.History.ToList();
+            var histories = Servicebook.History.ToList();
             List<HistoryModel> result = new List<HistoryModel> { };
-            foreach (var history in historyes)
+            foreach (var history in histories)
             {
                 if (history.CarVIN == vin)
                 {
@@ -57,13 +57,15 @@ namespace Allamvizsga.Controllers
                     {
                         if (serv.Flag == 0)
                         {
-                            serv.Car = GetHistoryesByVin(serv.VIN);
+                            serv.Car = GetHistoriesByVin(serv.VIN);
                             actualuserrepairs.Add(serv);
                         }
                     }
                     if (serv.Owner.Services != null)
                         serv.Owner.Services = null;
-                    foreach(var car in serv.Car)
+                    if (serv.User.Services != null)
+                        serv.User.Services = null;
+                    foreach (var car in serv.Car)
                     {
                         if (car.Service != null)
                             car.Service = null;
@@ -74,6 +76,9 @@ namespace Allamvizsga.Controllers
 
         }
         // GET: Services
+        
+
+        
         public ActionResult Index()
         {
 
@@ -81,7 +86,7 @@ namespace Allamvizsga.Controllers
             var actualuserrepairs = GetCurentServiceCars();
             
              
-            ServicesViewModel servicemodel = new ServicesViewModel()
+            ServiceViewModel servicemodel = new ServiceViewModel()
             {
                 Services = actualuserrepairs
             };
@@ -118,8 +123,7 @@ namespace Allamvizsga.Controllers
             newCar.Identifier = data.Identifier;
             newCar.VIN = data.VIN;
             newCar.Price = 0;
-            newCar.ActualKm = 0;
-            newCar.ServiceDate = DateTime.Now;
+           
             newCar.Flag = 0;
             newCar.ServiceId = curentService.ServiceId;
            
@@ -164,7 +168,7 @@ namespace Allamvizsga.Controllers
             mailMessage.From = new MailAddress("info.servicebook@gmail.com");
             mailMessage.Subject = "Your car with identifier: "+s.Service.Identifier+" it is ready!";
             mailMessage.Body = "Hello " +s.Service.Owner.FirstName+" "+s.Service.Owner.LastName + "!\n\n"+" Your Car with identifier: "+s.Service.Identifier +" it is ready! "+ " The repairs costs: "+s.Service.Price+" EURO";
-            mailMessage.Body += "\n List of repaires: ";
+            mailMessage.Body += "\n List of repairs: ";
             if (s.AirFilter == true)
                 mailMessage.Body += "\nAir Filter";
             if (s.BreakDiscAndPAds == true)
@@ -220,6 +224,17 @@ namespace Allamvizsga.Controllers
             return Json(new { success = success, messages = message, newCar = actualuserrepairs }, JsonRequestBehavior.DenyGet);
         }
 
-        
+        [HttpPost]
+        public ActionResult GetHistoryByVin(ServiceModel data)
+        {
+            bool success = false;
+            string message = "";
+            ServiceModel service = new ServiceModel();
+            service.Car = GetHistoriesByVin(data.VIN);
+          
+            success = true;
+            return Json(new { success = success, messages = message, newCar = service.Car}, JsonRequestBehavior.DenyGet);
+
+        }
     }
 }

@@ -1,9 +1,9 @@
-﻿@model Allamvizsga.Models.ServicesViewModel
+﻿@model Allamvizsga.Models.ServiceViewModel
 @{
     ViewBag.Title = "Index";
 }
 
-
+<br><br>
 <div class="container">
 
     <ul class="nav nav-tabs">
@@ -22,25 +22,26 @@
             @Html.Partial("_CurentCars")
         </div>
         <div id="menu1" class="tab-pane fade">
-           
+            <br>
+            <br>
 
+            @Html.Partial("_GetHistory")
 
         </div>
         
     </div>
 </div>
 
+
+
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-<script type="text/javascript" src="~/Scripts/Services/ServiceModel.js"></script>
-<script type="text/javascript" src="~/Scripts/Services/Dashboard.js"></script>
-<script type="text/javascript" src="~/Scripts/Services/OwnerModel.js"></script>
-<script type="text/javascript" src="~/Scripts/Services/RepaireModel.js"></script>
-<script type="text/javascript" src="~/Scripts/Services/ErrorModel.js"></script>
-
-
-
-
+<script type="text/javascript" src="~/Scripts/General.js"></script>
+<script type="text/javascript" src="~/Scripts/Service/Models/ServiceModel.js"></script>
+<script type="text/javascript" src="~/Scripts/Service/MainModel.js"></script>
+<script type="text/javascript" src="~/Scripts/Service/Models/OwnerModel.js"></script>
+<script type="text/javascript" src="~/Scripts/Service/Models/RepairModel.js"></script>
+<script type="text/javascript" src="~/Scripts/Service/Models/ErrorModel.js"></script>
 <script type="text/javascript">
-    InitializeDashboard(@Html.Raw(Json.Encode(Model)));
+    InitializeMainModel(@Html.Raw(Json.Encode(Model)));
       
 </script>

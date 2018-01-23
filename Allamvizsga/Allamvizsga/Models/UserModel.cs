@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Allamvizsga.Models
@@ -21,6 +22,7 @@ namespace Allamvizsga.Models
        public int Nr { get; set; }
        public string PhoneNumber { get; set; }
 
-     
+        public virtual ICollection<ServiceModel> Services { get; set; }
+
     }
 }

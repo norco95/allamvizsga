@@ -12,8 +12,6 @@ namespace Allamvizsga.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Cid { get; set; }
-       
-
         public string CarVIN { get; set; }
         public string OwnerPhoneNumber { get; set; }
         public bool EngineOilAndFilter { get; set; }
@@ -26,7 +24,6 @@ namespace Allamvizsga.Models
         public string Others { get; set; }
         public int CurentKm { get; set; }
         public int NextKmVisit { get; set; }
-        public int Flag { get; set; }
         public DateTime Servicedate { get; set; }
         public DateTime NextServiceDate { get; set; }
         public int ServiceId { get; set; }
